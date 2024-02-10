@@ -1,9 +1,12 @@
 <x-app-layout>
     <div class="pagetitle mb-5">
-        <x-button class="btn-primary float-end" type="button" data-bs-toggle="modal" data-bs-target="#add-new-group">
-            <i class="bi bi-plus me-1"></i>
-            {{ __('Add a New Group') }}
-        </x-button>
+        {{-- Display Add a New Group Button if the user has the 'super-admin' role --}}
+        @hasrole('super-admin')
+            <x-button class="btn-primary float-end" type="button" data-bs-toggle="modal" data-bs-target="#add-new-group">
+                <i class="bi bi-plus me-1"></i>
+                {{ __('Add a New Group') }}
+            </x-button>
+        @endhasrole
         <h1>{{ __('Groups') }}</h1>
     </div>
 
@@ -22,16 +25,19 @@
                             <tr>
                                 <td>Group 1</td>
                                 <td>
-                                    <a href="edit.route/1" class="mx-2">{{ __('Edit') }}</a>
-                    
-                                    <form id="deleteForm1" method="POST" action="delete.route/1" class="d-inline">
-                                        @csrf
-                                        @method('delete')
-                                    
-                                        <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="1">
-                                            {{ __('Delete') }}
-                                        </button>
-                                    </form>
+                                    {{-- Display Edit and Delete Options if the user has the 'super-admin' role --}}
+                                    @hasrole('super-admin')
+                                        <a href="edit.route/1" class="mx-2">{{ __('Edit') }}</a>
+                        
+                                        <form id="deleteForm1" method="POST" action="delete.route/1" class="d-inline">
+                                            @csrf
+                                            @method('delete')
+                                        
+                                            <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="1">
+                                                {{ __('Delete') }}
+                                            </button>
+                                        </form>
+                                    @endhasrole
                     
                                     <a href="view-users.route/1" class="mx-2">{{ __('View Users') }}</a>
                                 </td>
@@ -39,16 +45,19 @@
                             <tr>
                                 <td>Group 2</td>
                                 <td>
-                                    <a href="edit.route/2" class="mx-2">{{ __('Edit') }}</a>
-                    
-                                    <form id="deleteForm2" method="POST" action="delete.route/2" class="d-inline">
-                                        @csrf
-                                        @method('delete')
-                                    
-                                        <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="2">
-                                            {{ __('Delete') }}
-                                        </button>
-                                    </form>
+                                    {{-- Display Edit and Delete Options if the user has the 'super-admin' role --}}
+                                    @hasrole('super-admin')
+                                        <a href="edit.route/2" class="mx-2">{{ __('Edit') }}</a>
+                        
+                                        <form id="deleteForm2" method="POST" action="delete.route/2" class="d-inline">
+                                            @csrf
+                                            @method('delete')
+                                        
+                                            <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="2">
+                                                {{ __('Delete') }}
+                                            </button>
+                                        </form>
+                                    @endhasrole
                     
                                     <a href="view-users.route/2" class="mx-2">{{ __('View Users') }}</a>
                                 </td>

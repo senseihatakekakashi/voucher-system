@@ -1,0 +1,5 @@
+.switch-list-box-card {
+    height: 100px;
+    overflow: auto;
+    scrollbar-width: thin;
+}

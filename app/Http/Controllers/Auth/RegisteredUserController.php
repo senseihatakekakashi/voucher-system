@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\WelcomeEmailNotification;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,7 +42,15 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
         ]);
+
+        // On successful registration, the user will receive a welcome email
+        $user->notify(new WelcomeEmailNotification());
+
+        // On successful registration, the user will receive a role of users
+        $user->assignRole('users');
+
 
         event(new Registered($user));
 

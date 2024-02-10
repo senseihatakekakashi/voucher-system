@@ -18,7 +18,10 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6>{{ Auth::user()->name }}</h6>
-                        <span>Group 1</span>
+                        {{-- Display content if the user has the 'users' role --}}
+                        @hasrole('users')
+                            <span>Group 1</span>
+                        @endhasrole
                     </li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}">

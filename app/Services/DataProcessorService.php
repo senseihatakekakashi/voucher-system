@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services;
+use App\Models\Group;
+use App\Models\User;
 use App\Services\DecryptService;
 use Carbon\Carbon;
 
@@ -19,5 +21,16 @@ class DataProcessorService
         }
 
         return $data;
+    }
+
+    public function filter_group_admins_access_to_groups($user) {
+        if($user->hasRole('super-admin'))
+            $groups = Group::orderBy('name')->get(['id', 'name']);
+        elseif($user->hasRole('group-admin'))
+            $groups = User::with('groups')->orderBy('name')->find($user->id)->groups;
+        else
+            $groups = null;
+
+        return $groups;
     }
 }

@@ -1,74 +1,61 @@
 <x-app-layout>
     <div class="pagetitle mb-5">
         <h1>{{ __('Users') }}</h1>
+        <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{ route('groups.index') }}">{{ __('Home') }}</a></li>
+              <li class="breadcrumb-item active">{{ __('Users') }}</li>
+            </ol>
+        </nav>
     </div>
 
     <section class="section dashboard">
         <div class="row">
             <div class="col-12">
-                <x-section-card title="{{ __('Grouped Users List') }}">
+                <x-section-card title="{{ __('List of user under the group: ') . ' [' . $group->name .']' }}">
+
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Group</th>
-                                <th scope="col">Voucher Codes</th>
-                                <th scope="col">Options</th>
+                                <th scope="col" class="col-2">Name</th>
+                                <th scope="col" class="col-8">Voucher Codes</th>
+                                <th scope="col" class="col-2">Options</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>User 1</td>
-                                <td>Group 1</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-secondary">123456</span>
-                                    <span class="badge rounded-pill bg-secondary">789012</span>
-                                    <span class="badge rounded-pill bg-secondary">345678</span>
-                                    <span class="badge rounded-pill bg-secondary">901112</span>
-                                    <span class="badge rounded-pill bg-secondary">131415</span>
-                                    <span class="badge rounded-pill bg-secondary">161718</span>
-                                    <span class="badge rounded-pill bg-secondary">192021</span>
-                                    <span class="badge rounded-pill bg-secondary">222324</span>
-                                    <span class="badge rounded-pill bg-secondary">252627</span>
-                                    <span class="badge rounded-pill bg-secondary">282930</span>
-                                </td>
-                                <td>
-                                    <form id="deleteForm1" method="POST" action="delete.route/1" class="d-inline">
-                                        @csrf
-                                        @method('delete')
-                                    
-                                        <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="1">
-                                            {{ __('Remove User to this Group') }}
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>User 2</td>
-                                <td>Group 2</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-secondary">161718</span>
-                                    <span class="badge rounded-pill bg-secondary">192021</span>
-                                    <span class="badge rounded-pill bg-secondary">222324</span>
-                                    <span class="badge rounded-pill bg-secondary">252627</span>
-                                    <span class="badge rounded-pill bg-secondary">282930</span>
-                                    <span class="badge rounded-pill bg-secondary">123456</span>
-                                    <span class="badge rounded-pill bg-secondary">789012</span>
-                                    <span class="badge rounded-pill bg-secondary">345678</span>
-                                    <span class="badge rounded-pill bg-secondary">901112</span>
-                                    <span class="badge rounded-pill bg-secondary">131415</span>
-                                </td>
-                                <td>
-                                    <form id="deleteForm1" method="POST" action="delete.route/2" class="d-inline">
-                                        @csrf
-                                        @method('delete')
-                                    
-                                        <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="2">
-                                            {{ __('Remove User to this Group') }}
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
+                            @if ($group->users->isNotEmpty())
+                                @foreach ($group->users as $key => $user)
+                                    <tr>
+                                        <td>{{ $user->name }}</td>
+                                        <td>
+                                            <span class="badge rounded-pill bg-secondary">123456</span>
+                                            <span class="badge rounded-pill bg-secondary">789012</span>
+                                            <span class="badge rounded-pill bg-secondary">345678</span>
+                                            <span class="badge rounded-pill bg-secondary">901112</span>
+                                            <span class="badge rounded-pill bg-secondary">131415</span>
+                                            <span class="badge rounded-pill bg-secondary">161718</span>
+                                            <span class="badge rounded-pill bg-secondary">192021</span>
+                                            <span class="badge rounded-pill bg-secondary">222324</span>
+                                            <span class="badge rounded-pill bg-secondary">252627</span>
+                                            <span class="badge rounded-pill bg-secondary">282930</span>
+                                        </td>
+                                        <td>
+                                            <form id="deleteForm{{$key}}" method="POST" action="{{ route('users.destroy', Crypt::encryptString($user->id)) }}" class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                            
+                                                <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="{{$key}}">
+                                                    {{ __('Remove User to this Group') }}
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="3">No Users Assigned to this Group</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </x-section-card>
@@ -79,48 +66,46 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Voucher Codes</th>
-                                <th scope="col">Options</th>
+                                <th scope="col" class="col-2">Name</th>
+                                <th scope="col" class="col-8">Voucher Codes</th>
+                                <th scope="col" class="col-2">Options</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>User 1</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-secondary">123456</span>
-                                    <span class="badge rounded-pill bg-secondary">789012</span>
-                                    <span class="badge rounded-pill bg-secondary">345678</span>
-                                    <span class="badge rounded-pill bg-secondary">901112</span>
-                                    <span class="badge rounded-pill bg-secondary">131415</span>
-                                    <span class="badge rounded-pill bg-secondary">161718</span>
-                                    <span class="badge rounded-pill bg-secondary">192021</span>
-                                    <span class="badge rounded-pill bg-secondary">222324</span>
-                                    <span class="badge rounded-pill bg-secondary">252627</span>
-                                    <span class="badge rounded-pill bg-secondary">282930</span>
-                                </td>
-                                <td>
-                                    <a href="assign-user.route/1" class="mx-2">{{ __('Assign User to a Group') }}</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>User 2</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-secondary">161718</span>
-                                    <span class="badge rounded-pill bg-secondary">192021</span>
-                                    <span class="badge rounded-pill bg-secondary">222324</span>
-                                    <span class="badge rounded-pill bg-secondary">252627</span>
-                                    <span class="badge rounded-pill bg-secondary">282930</span>
-                                    <span class="badge rounded-pill bg-secondary">123456</span>
-                                    <span class="badge rounded-pill bg-secondary">789012</span>
-                                    <span class="badge rounded-pill bg-secondary">345678</span>
-                                    <span class="badge rounded-pill bg-secondary">901112</span>
-                                    <span class="badge rounded-pill bg-secondary">131415</span>
-                                </td>
-                                <td>
-                                    <a href="assign-user.route/2" class="mx-2">{{ __('Assign User to a Group') }}</a>
-                                </td>
-                            </tr>
+                            @if ($unallocated_users->isNotEmpty())
+                                @foreach ($unallocated_users as $key => $user)
+                                    <tr>
+                                        <td>{{ $user->name }}</td>
+                                        <td>
+                                            <span class="badge rounded-pill bg-secondary">123456</span>
+                                            <span class="badge rounded-pill bg-secondary">789012</span>
+                                            <span class="badge rounded-pill bg-secondary">345678</span>
+                                            <span class="badge rounded-pill bg-secondary">901112</span>
+                                            <span class="badge rounded-pill bg-secondary">131415</span>
+                                            <span class="badge rounded-pill bg-secondary">161718</span>
+                                            <span class="badge rounded-pill bg-secondary">192021</span>
+                                            <span class="badge rounded-pill bg-secondary">222324</span>
+                                            <span class="badge rounded-pill bg-secondary">252627</span>
+                                            <span class="badge rounded-pill bg-secondary">282930</span>
+                                        </td>
+                                        <td>
+                                            <form id="groupUserAssignForm{{$key}}" method="POST" action="{{ route('users.update', Crypt::encryptString($user->id)) }}" class="d-inline">
+                                                @csrf
+                                                @method('put')
+                                                <input type="hidden" name="group" value="{{ Crypt::encryptString($group->id) }}">
+                                                <button type="button" class="btn btn-link text-decoration-none group-user-assign-button" data-id="{{$key}}">
+                                                    {{ __('Assign User to this Group') }}
+                                                </button>
+                                            </form>
+                                            {{-- <a href="{{ route('users.edit', Crypt::encryptString($user->id)) }}" class="mx-2">{{ __('Assign User to this Group') }}</a> --}}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="3">No Unallocated User found!</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </x-section-card>
@@ -148,4 +133,5 @@
         </div>
     </x-modal>
     <x-delete-alert />
+    <x-group-user-assign-alert />
 </x-app-layout>

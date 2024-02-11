@@ -3,7 +3,7 @@
         <h1>{{ __('Groups') }}</h1>
         <nav>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#">{{ __('Home') }}</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('groups.index') }}">{{ __('Home') }}</a></li>
               <li class="breadcrumb-item active">{{ __('Update a Group') }}</li>
             </ol>
         </nav>
@@ -13,16 +13,18 @@
         <div class="row">
             <div class="col-12">
                 <x-section-card title="{{ __('Modify a Group Name') }}">
-                    <form method="POST" action="route" class="row g-3 needs-validation">
+                    <form method="POST" action="{{ route('groups.update', $group) }}" class="row g-3 needs-validation">
                         @csrf
+                        @method('PUT')
+                        
                         <div class="col-6">
                             <x-input-label for="name" :value="__('Name')" />
-                            <x-text-input id="name" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                            <x-text-input id="name" type="text" name="name" :value="$group->name" required autofocus autocomplete="name" />
                             <x-input-error :messages="$errors->get('name')" />
                         </div>
                     
                         <div class="col-3 d-flex align-items-end">
-                            <x-button class="btn-secondary w-100">
+                            <x-button class="btn-secondary w-100" type="button" onclick="location.href = '{{ route('groups.index') }}';">
                                 {{ __('Cancel') }}
                             </x-button>
                         </div>

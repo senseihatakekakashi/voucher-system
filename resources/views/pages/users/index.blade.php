@@ -112,26 +112,6 @@
             </div>
         </div>
     </section>
-    <x-modal id="add-new-group" title="Add a New Group" size="modal-lg">
-        <div class="card p-4 m-4">
-            <div class="card-body">
-                <form method="POST" action="{{ route('register') }}" class="row g-3 needs-validation">
-                    @csrf
-                    <div class="col-12">
-                        <x-input-label for="name" :value="__('Name')" />
-                        <x-text-input id="name" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-                        <x-input-error :messages="$errors->get('name')" />
-                    </div>
-                
-                    <div class="col-12">
-                        <x-button class="btn-primary w-100">
-                            {{ __('Save') }}
-                        </x-button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </x-modal>
     <x-delete-alert />
     <x-group-user-assign-alert />
 </x-app-layout>

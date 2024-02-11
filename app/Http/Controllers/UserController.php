@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Services\DecryptService;
 use App\Services\CUDService;
 use Redirect;
-use Session;
 
 class UserController extends Controller
 {
@@ -21,7 +20,6 @@ class UserController extends Controller
         $id = (new DecryptService)->decrypt($request->key);
         $group = Group::with('users')->find($id);
         $unallocated_users = User::whereDoesntHave('groups')->role('users')->get();
-        Session::put('group_id', $id);
         
         return view('pages.users.index')
                 ->with('group', $group)

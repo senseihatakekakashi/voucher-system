@@ -8,6 +8,9 @@
             </x-button>
         @endhasrole
         <h1>{{ __('Groups') }}</h1>
+        @if(session('status'))
+            <x-save-alert />
+        @endif
     </div>
 
     <section class="section dashboard">
@@ -22,46 +25,30 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Group 1</td>
-                                <td>
-                                    {{-- Display Edit and Delete Options if the user has the 'super-admin' role --}}
-                                    @hasrole('super-admin')
-                                        <a href="edit.route/1" class="mx-2">{{ __('Edit') }}</a>
+                            @if ($groups->isNotEmpty())
+                                @foreach ($groups as $key => $group)
+                                <tr>
+                                    <td>{{ $group->name }}</td>
+                                    <td>
+                                        {{-- Display Edit and Delete Options if the user has the 'super-admin' role --}}
+                                        @hasrole('super-admin')
+                                            <a href="{{ route('groups.edit', Crypt::encryptString($group->id)) }}" class="mx-2">{{ __('Edit') }}</a>
+                            
+                                            <form id="deleteForm{{$key}}" method="POST" action="{{ route('groups.destroy', Crypt::encryptString($group->id)) }}" class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                            
+                                                <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="{{$key}}">
+                                                    {{ __('Delete') }}
+                                                </button>
+                                            </form>
+                                        @endhasrole
                         
-                                        <form id="deleteForm1" method="POST" action="delete.route/1" class="d-inline">
-                                            @csrf
-                                            @method('delete')
-                                        
-                                            <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="1">
-                                                {{ __('Delete') }}
-                                            </button>
-                                        </form>
-                                    @endhasrole
-                    
-                                    <a href="view-users.route/1" class="mx-2">{{ __('View Users') }}</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Group 2</td>
-                                <td>
-                                    {{-- Display Edit and Delete Options if the user has the 'super-admin' role --}}
-                                    @hasrole('super-admin')
-                                        <a href="edit.route/2" class="mx-2">{{ __('Edit') }}</a>
-                        
-                                        <form id="deleteForm2" method="POST" action="delete.route/2" class="d-inline">
-                                            @csrf
-                                            @method('delete')
-                                        
-                                            <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="2">
-                                                {{ __('Delete') }}
-                                            </button>
-                                        </form>
-                                    @endhasrole
-                    
-                                    <a href="view-users.route/2" class="mx-2">{{ __('View Users') }}</a>
-                                </td>
-                            </tr>
+                                        <a href="view-users.route/1" class="mx-2">{{ __('View Users') }}</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>                                        
                 </x-section-card>
@@ -71,7 +58,7 @@
     <x-modal id="add-new-group" title="Add a New Group" size="modal-lg">
         <div class="card p-4 m-4">
             <div class="card-body">
-                <form method="POST" action="route" class="row g-3 needs-validation">
+                <form method="POST" action="{{ route('groups.store') }}" class="row g-3 needs-validation">
                     @csrf
                     <div class="col-12">
                         <x-input-label for="name" :value="__('Name')" />

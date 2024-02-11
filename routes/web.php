@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route group accessible to users with either 'super-admin' or 'group-admin' roles
     Route::group(['middleware' => ['role:super-admin|group-admin']], function () {
         // Place routes or route definitions specific to 'super-admin' or 'group-admin' here
+        Route::resource('/groups', GroupController::class);
     });
 
     // Route group accessible only to users with the 'users' role

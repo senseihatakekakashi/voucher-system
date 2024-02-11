@@ -44,7 +44,7 @@
                                             </form>
                                         @endhasrole
                         
-                                        <a href="view-users.route/1" class="mx-2">{{ __('View Users') }}</a>
+                                        <a href="{{ route('users.index', 'key=' . Crypt::encryptString($group->id)) }}" class="mx-2">{{ __('View Users') }}</a>
                                     </td>
                                 </tr>
                                 @endforeach

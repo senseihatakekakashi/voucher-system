@@ -6,7 +6,9 @@ use App\Models\Group;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
 use App\Services\DecryptService;
+use App\Services\DataProcessorService;
 use App\Services\CUDService;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -15,7 +17,7 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::orderBy('name')->get(['id', 'name']);
+        $groups = (new DataProcessorService)->filter_group_admins_access_to_groups(auth()->user());
         return view('pages.groups.index')->with('groups', $groups);
     }
 

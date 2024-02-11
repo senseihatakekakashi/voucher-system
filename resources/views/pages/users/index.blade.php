@@ -24,7 +24,7 @@
                         </thead>
                         <tbody>
                             @if ($group->users->isNotEmpty())
-                                @foreach ($group->users as $key => $user)
+                                @foreach ($group->users->sortBy('name') as $key => $user)
                                     <tr>
                                         <td>{{ $user->name }}</td>
                                         <td>
@@ -40,14 +40,20 @@
                                             <span class="badge rounded-pill bg-secondary">282930</span>
                                         </td>
                                         <td>
-                                            <form id="deleteForm{{$key}}" method="POST" action="{{ route('users.destroy', Crypt::encryptString($user->id)) }}" class="d-inline">
-                                                @csrf
-                                                @method('delete')
-                                            
-                                                <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="{{$key}}">
+                                            @if ($user->hasRole('users'))
+                                                <form id="deleteForm{{$key}}" method="POST" action="{{ route('users.destroy', Crypt::encryptString($user->id)) }}" class="d-inline">
+                                                    @csrf
+                                                    @method('delete')
+                                                
+                                                    <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="{{$key}}">
+                                                        {{ __('Remove User to this Group') }}
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <button type="button" class="btn btn-link text-decoration-none delete-button" disabled>
                                                     {{ __('Remove User to this Group') }}
                                                 </button>
-                                            </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

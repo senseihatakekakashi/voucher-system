@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $id = (new DecryptService)->decrypt($request->key);
         $group = Group::with('users')->find($id);
-        $unallocated_users = User::whereDoesntHave('groups')->role('users')->get();
+        $unallocated_users = User::whereDoesntHave('groups')->role('users')->orderBy('name')->get();
         
         return view('pages.users.index')
                 ->with('group', $group)

@@ -3,6 +3,7 @@
 use App\Http\Controllers\GroupAdminController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VoucherCodeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,7 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Route group accessible only to users with the 'users' role
     Route::group(['middleware' => ['role:users']], function () {
-        // Place routes or route definitions specific to 'users' here
+        Route::resource('/voucher-codes', VoucherCodeController::class);
     });
 
     Route::get('/dashboard', function () {

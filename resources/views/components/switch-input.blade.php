@@ -16,6 +16,7 @@
         {{ $checked ? 'checked' : '' }} 
         {{ $disabled ? 'disabled' : '' }}
     >
+    <label class="form-check-label" for="{{ $id }}">
         {{ $slot }}
     </label>
 </div>

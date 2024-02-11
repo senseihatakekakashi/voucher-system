@@ -7,7 +7,7 @@
         <h1>{{ __('Group Admins') }}</h1>
         <nav>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#">{{ __('Home') }}</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('group-admins.index') }}">{{ __('Home') }}</a></li>
               <li class="breadcrumb-item active">{{ __('Assign Group Admin to Groups') }}</li>
             </ol>
         </nav>
@@ -18,7 +18,7 @@
             <div class="col-12 mb-3">
                 <x-section-card title="Selected Group Admin:">
                     <h5>
-                        <span class="badge rounded-pill bg-primary">{{ Auth::user()->name }}</span>
+                        <span class="badge rounded-pill bg-primary">{{ $group_admin->name }}</span>
                     </h5>
                 </x-section-card>
             </div>
@@ -32,59 +32,54 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Group 1</td>
-                                <td>
-                                    <form id="deleteForm1" method="POST" action="delete.route/1" class="d-inline">
-                                        @csrf
-                                        @method('delete')
-                                    
-                                        <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="1">
-                                            {{ __('Remove From the Group') }}
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Group 2</td>
-                                <td>
-                                    <form id="deleteForm2" method="POST" action="delete.route/2" class="d-inline">
-                                        @csrf
-                                        @method('delete')
-                                    
-                                        <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="2">
-                                            {{ __('Remove From the Group') }}
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
+                            @if ($group_admin_groups->groups->isNotEmpty())
+                                @foreach ($group_admin_groups->groups as $key => $group)
+                                    <tr>
+                                        <td>{{ $group->name }}</td>
+                                        <td>
+                                            <form id="deleteForm{{$key}}" method="POST" action="{{ route('group-admins.destroy', Crypt::encryptString($group->id)) }}" class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <input type="hidden" name="user" value="{{ Crypt::encryptString($group_admin->id) }}">
+                                                <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="{{$key}}">
+                                                    {{ __('Remove From the Group') }}
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="2">No Groups Assigned to this Group Admin.</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>                                        
                 </x-section-card>
             </div>
         </div>
     </section>
-    <x-modal id="add-new-group" title="Assign [Group Admin] to a Group" size="modal-md">
+    <x-modal id="add-new-group" title="Assign [{{$group_admin->name}}] to a Group" size="modal-md">
         <div class="card p-4 m-4">
             <div class="card-body">
-                <form method="POST" action="{{ route('register') }}" class="row g-3 needs-validation">
+                <form method="POST" action="{{ route('group-admins.update', Crypt::encryptString($group_admin->id)) }}" class="row g-3 needs-validation">
                     @csrf
+                    @method('put')
+
                     <div class="col-12 border rounded-2 p-3 switch-list-box-card">
-                        <x-switch-input id="group-1" name="groups[]" value="Group 1">
-                            {{ __('Group 1') }}
-                        </x-switch-input>
-                        <x-switch-input id="group-2" name="groups[]" value="Group 2">
-                            {{ __('Group 2') }}
-                        </x-switch-input>
-                        <x-switch-input id="group-3" name="groups[]" value="Group 3">
-                            {{ __('Group 3') }}
-                        </x-switch-input>
-                        <x-switch-input id="group-4" name="groups[]" value="Group 4">
-                            {{ __('Group 4') }}
-                        </x-switch-input>
-                        <x-switch-input id="group-5" name="groups[]" value="Group 5">
-                            {{ __('Group 5') }}
-                        </x-switch-input>
+                        @if ($groups->isNotEmpty())
+                            @foreach ($groups as $group)
+                                @if ($group_admin_groups->groups->contains('id', $group->id))
+                                    <x-switch-input id="group-{{ $group->id }}" name="groups[]" value="{{ Crypt::encryptString($group->id) }}" checked>
+                                        {{ __($group->name) }}
+                                    </x-switch-input>
+                                @else
+                                    <x-switch-input id="group-{{ $group->id }}" name="groups[]" value="{{ Crypt::encryptString($group->id) }}">
+                                        {{ __($group->name) }}
+                                    </x-switch-input>
+                                @endif
+                            @endforeach
+                        @endif
                     </div>
                 
                     <div class="col-12">

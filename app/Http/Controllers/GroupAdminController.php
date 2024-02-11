@@ -70,7 +70,7 @@ class GroupAdminController extends Controller
         $group_user = GroupUser::where('user_id', (new DecryptService)->decrypt($id));
         (new CUDService)->delete($group_user);
 
-        $data = (new DataProcessorService)->assign_group_admins_to_group($id, $request->groups);
+        $data = (new DataProcessorService)->assignGroupAdminsToGroup($id, $request->groups);
         GroupUser::insert($data);
         return Redirect::back();
     }

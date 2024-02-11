@@ -17,7 +17,7 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = (new DataProcessorService)->filter_group_admins_access_to_groups(auth()->user());
+        $groups = (new DataProcessorService)->filterGroupAdminsAccessToGroups(auth()->user());
         return view('pages.groups.index')->with('groups', $groups);
     }
 

@@ -8,13 +8,15 @@ use Illuminate\View\Component;
 
 class VoucherCard extends Component
 {
+    public $id;
     public $key;
     public $code;
     /**
      * Create a new component instance.
      */
-    public function __construct($key, $code)
+    public function __construct($id, $key, $code)
     {
+        $this->id = $id;
         $this->key = $key;
         $this->code = $code;
     }

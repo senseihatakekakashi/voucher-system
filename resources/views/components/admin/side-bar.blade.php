@@ -13,7 +13,7 @@
 
         {{-- Display a side-bar item for users with the 'users' role --}}
         @hasrole('users')
-            <x-admin.side-bar-item state="collapsed" uri="#" icon="bi bi-card-checklist" item="Voucher Codes" />
+            <x-admin.side-bar-item state="collapsed" uri="{{ route('voucher-codes.index') }}" icon="bi bi-card-checklist" item="Voucher Codes" />
         @endhasrole
     </ul>
 </aside>

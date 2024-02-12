@@ -103,7 +103,9 @@ Seed the database with sample data:
 php artisan db:seed
 ```
 
-## Mail Configuration
+**Mail Configuration**
+
+The application uses Mailtrap for testing and development purposes. Update the following mail configuration in the .env file:
 
 This document covers email configuration for the application, focusing on development and testing using Mailtrap.
 
@@ -144,8 +146,6 @@ MAIL_FROM_NAME="${APP_NAME}"
 * This configuration is recommended for testing purposes only.
 * For production environments, consult your chosen email provider for specific configuration details.
 * Consider implementing security measures like sender domain verification for production setups.
-
-I hope this Markdown version of the instructions is helpful! Feel free to ask if you have any further questions.
 
 **Testing**
 

@@ -1,6 +1,5 @@
 <div class="card info-card sales-card">
     <div class="filter">
-        {{-- route('name.destroy', $key) --}}
         <form id="deleteForm{{ $key }}" method="POST" action="{{ route('voucher-codes.destroy', Crypt::encryptString($id)) }}">
             @csrf
             @method('delete')

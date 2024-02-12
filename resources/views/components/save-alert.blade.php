@@ -3,8 +3,7 @@
         Swal.fire({
             title: "Voucher System",
             text: "Record Successfully Saved",
-            icon: "success",
-            
+            icon: "success", 
         });
     });
 </script>

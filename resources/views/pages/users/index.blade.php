@@ -89,7 +89,6 @@
                                                     {{ __('Assign User to this Group') }}
                                                 </button>
                                             </form>
-                                            {{-- <a href="{{ route('users.edit', Crypt::encryptString($user->id)) }}" class="mx-2">{{ __('Assign User to this Group') }}</a> --}}
                                         </td>
                                     </tr>
                                 @endforeach

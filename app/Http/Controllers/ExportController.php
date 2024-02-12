@@ -4,71 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Services\ExportCSVService;
 use App\Services\DecryptService;
-use League\Csv\Writer;
-
+use App\Services\ExportCSVService;
+use Illuminate\Http\Request;
 
 class ExportController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
+{   
+    protected $decryptService;
+    protected $exportCSVService;
+
+    public function __construct()
+    {
+        $this->decryptService = new DecryptService;
+        $this->exportCSVService = new ExportCSVService;
+    }
+
     public function index()
     {
         $users = User::with('voucherCodes')->orderBy('name')->get();
-        $csvFile = (new ExportCSVService)->exportAll($users);
+        $csvFile = $this->exportCSVService->exportAll($users);
         return response()->download($csvFile)->deleteFileAfterSend(true);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        $group = Group::find((new DecryptService)->decrypt($id));   
-        $csvFile = (new ExportCSVService)->exportGroupUsers($group);
+        $group = Group::find($this->decryptService->decrypt($id));   
+        $csvFile = $this->exportCSVService->exportGroupUsers($group);
         return response()->download($csvFile)->deleteFileAfterSend(true);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

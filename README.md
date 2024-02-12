@@ -158,11 +158,3 @@ Feel free to contribute to the project by opening issues or pull requests.
 **License**
 
 This project is licensed under the MIT License.
-
-**Additional Notes**
-
-* This README is formatted with Markdown for better readability.
-* You can adjust the content and style to fit your specific needs.
-* Consider adding sections for security considerations, performance optimization, and deployment instructions.
-
-I hope this formatted README file is helpful! Let me know if you have any other questions.

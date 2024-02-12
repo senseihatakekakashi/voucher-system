@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+
 use App\Models\Group;
 use App\Models\User;
 use App\Models\VoucherCode;
@@ -10,14 +11,21 @@ use Illuminate\Support\Str;
 
 class DataProcessorService
 {
+    protected $decryptService;
+
+    public function __construct()
+    {
+        $this->decryptService = new DecryptService;
+    }
+
     public function assignGroupAdminsToGroup($group_admin_id, $groups) {
         if(count($groups) > 0) {
             foreach($groups as $key => $group) {
                 $data[$key] = [
                     'created_at' => Carbon::now()->toDateTimeString(),
                     'updated_at' => Carbon::now()->toDateTimeString(),
-                    'group_id' => (new DecryptService)->decrypt($group),
-                    'user_id' => (new DecryptService)->decrypt($group_admin_id),
+                    'group_id' => $this->decryptService->decrypt($group),
+                    'user_id' => $this->decryptService->decrypt($group_admin_id),
                 ];
             }
         }
@@ -55,6 +63,5 @@ class DataProcessorService
         $perPage = 5;
         $voucher_codes = VoucherCode::where('user_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
         return $voucher_codes->forPage($page, $perPage);
-        
     }
 }

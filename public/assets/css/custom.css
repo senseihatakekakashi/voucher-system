@@ -3,3 +3,7 @@
     overflow: auto;
     scrollbar-width: thin;
 }
+
+.voucher-badge-width {
+    width: 75px !important;
+}

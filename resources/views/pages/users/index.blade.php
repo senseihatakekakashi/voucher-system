@@ -25,22 +25,17 @@
                         <tbody>
                             @if ($group->users->isNotEmpty())
                                 @foreach ($group->users->sortBy('name') as $key => $user)
-                                    <tr>
-                                        <td>{{ $user->name }}</td>
-                                        <td>
-                                            <span class="badge rounded-pill bg-secondary">123456</span>
-                                            <span class="badge rounded-pill bg-secondary">789012</span>
-                                            <span class="badge rounded-pill bg-secondary">345678</span>
-                                            <span class="badge rounded-pill bg-secondary">901112</span>
-                                            <span class="badge rounded-pill bg-secondary">131415</span>
-                                            <span class="badge rounded-pill bg-secondary">161718</span>
-                                            <span class="badge rounded-pill bg-secondary">192021</span>
-                                            <span class="badge rounded-pill bg-secondary">222324</span>
-                                            <span class="badge rounded-pill bg-secondary">252627</span>
-                                            <span class="badge rounded-pill bg-secondary">282930</span>
-                                        </td>
-                                        <td>
-                                            @if ($user->hasRole('users'))
+                                    @if ($user->hasRole('users'))
+                                        <tr>
+                                            <td>{{ $user->name }}</td>
+                                            <td>
+                                                @if ($user->voucherCodes->isNotEmpty())
+                                                    @foreach ($user->voucherCodes as $item)
+                                                        <span class="badge rounded-pill bg-secondary voucher-badge-width">{{ $item->voucher_code }}</span>        
+                                                    @endforeach
+                                                @endif
+                                            </td>
+                                            <td>
                                                 <form id="deleteForm{{$key}}" method="POST" action="{{ route('users.destroy', Crypt::encryptString($user->id)) }}" class="d-inline">
                                                     @csrf
                                                     @method('delete')
@@ -49,13 +44,9 @@
                                                         {{ __('Remove User to this Group') }}
                                                     </button>
                                                 </form>
-                                            @else
-                                                <button type="button" class="btn btn-link text-decoration-none delete-button" disabled>
-                                                    {{ __('Remove User to this Group') }}
-                                                </button>
-                                            @endif
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             @else
                                 <tr>
@@ -83,16 +74,11 @@
                                     <tr>
                                         <td>{{ $user->name }}</td>
                                         <td>
-                                            <span class="badge rounded-pill bg-secondary">123456</span>
-                                            <span class="badge rounded-pill bg-secondary">789012</span>
-                                            <span class="badge rounded-pill bg-secondary">345678</span>
-                                            <span class="badge rounded-pill bg-secondary">901112</span>
-                                            <span class="badge rounded-pill bg-secondary">131415</span>
-                                            <span class="badge rounded-pill bg-secondary">161718</span>
-                                            <span class="badge rounded-pill bg-secondary">192021</span>
-                                            <span class="badge rounded-pill bg-secondary">222324</span>
-                                            <span class="badge rounded-pill bg-secondary">252627</span>
-                                            <span class="badge rounded-pill bg-secondary">282930</span>
+                                            @if ($user->voucherCodes->isNotEmpty())
+                                                @foreach ($user->voucherCodes as $item)
+                                                    <span class="badge rounded-pill bg-secondary voucher-badge-width">{{ $item->voucher_code }}</span>        
+                                                @endforeach
+                                            @endif
                                         </td>
                                         <td>
                                             <form id="groupUserAssignForm{{$key}}" method="POST" action="{{ route('users.update', Crypt::encryptString($user->id)) }}" class="d-inline">

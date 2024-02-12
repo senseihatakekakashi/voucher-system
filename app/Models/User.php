@@ -50,7 +50,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class);
     }
 
-    public function voucher_codes()
+    public function voucherCodes()
     {
         return $this->hasMany(VoucherCode::class);
     }

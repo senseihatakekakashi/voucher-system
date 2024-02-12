@@ -13,8 +13,11 @@ class GroupSeeder extends Seeder
      */
     public function run(): void
     {
+        // You can adjust the number of groups you want to create
+        $numberOfGroups = 20;
+
         Group::factory()
-        ->count(20)
-        ->create();
+            ->count($numberOfGroups)
+            ->create();
     }
 }

@@ -14,7 +14,7 @@ class VoucherCodeSeeder extends Seeder
      */
     public function run(): void
     {
-        // Assume you have 'user' role defined by Spatie
+        // Generate voucher codes for users with the 'users' role
         $users = Role::where('name', 'users')->first()->users;
 
         foreach ($users as $user) {

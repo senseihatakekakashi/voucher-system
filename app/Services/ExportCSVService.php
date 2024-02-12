@@ -1,11 +1,27 @@
 <?php
 
 namespace App\Services;
+
 use League\Csv\Writer;
 
+/**
+ * Class ExportCSVService
+ *
+ * This class provides functionality to export data to CSV files.
+ *
+ * @package App\Services
+ */
 class ExportCSVService
 {
-    public function exportAll($model) {
+    /**
+     * Export all users and their voucher codes to a CSV file.
+     *
+     * @param \Illuminate\Database\Eloquent\Collection $model The collection of users.
+     *
+     * @return string The path to the generated CSV file.
+     */
+    public function exportAll($model)
+    {
         $csvData = [['No.', 'Name', 'Voucher Code']];
         $counter = 1;
 
@@ -20,11 +36,19 @@ class ExportCSVService
         $csvFile = public_path('exports/all-users-and-voucher-codes.csv');
         $csv = Writer::createFromFileObject(new \SplFileObject($csvFile, 'w+'));
         $csv->insertAll($csvData);
-    
+
         return $csvFile;
     }
 
-    public function exportGroupUsers($group) {
+    /**
+     * Export users in a specific group and their voucher codes to a CSV file.
+     *
+     * @param \App\Models\Group $group The group to export users from.
+     *
+     * @return string|\Illuminate\Http\JsonResponse The path to the generated CSV file or an error response.
+     */
+    public function exportGroupUsers($group)
+    {
         if (!$group) {
             return response()->json(['error' => 'Group not found.'], 404);
         }

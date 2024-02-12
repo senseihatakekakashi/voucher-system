@@ -21,8 +21,8 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="col-2">Name</th>
-                                <th scope="col" class="col-8">Voucher Codes</th>
-                                <th scope="col" class="col-2">Options</th>
+                                <th scope="col" class="col-7">Voucher Codes</th>
+                                <th scope="col" class="col-3">Options</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,8 +69,8 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="col-2">Name</th>
-                                <th scope="col" class="col-8">Voucher Codes</th>
-                                <th scope="col" class="col-2">Options</th>
+                                <th scope="col" class="col-7">Voucher Codes</th>
+                                <th scope="col" class="col-3">Options</th>
                             </tr>
                         </thead>
                         <tbody>

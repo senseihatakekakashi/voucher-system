@@ -1,4 +1,5 @@
 <x-app-layout>
+    <!-- Page Title and Add New Voucher Button -->
     <div class="pagetitle mb-5">
         <form method="POST" action="{{ route('voucher-codes.store') }}">
             @csrf
@@ -8,13 +9,17 @@
             </x-button>
         </form>
         <h1>{{ __('Voucher Codes') }}</h1>
+
+        <!-- Display Max Voucher Error Alert -->
         @if(session('status'))
             <x-max-voucher-error-alert />
         @endif
     </div>
 
+    <!-- Voucher Codes Section -->
     <section class="section dashboard">
         <div class="row d-flex justify-content-center">
+            <!-- Display Voucher Cards -->
             @if ($voucher_codes->isNotEmpty())
                 @foreach ($voucher_codes as $key => $item)
                     <div class="col-12 col-xl-2">
@@ -23,6 +28,8 @@
                 @endforeach
             @endif
         </div>
+
+        <!-- Pagination -->
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <nav>
@@ -34,5 +41,7 @@
             </div>
         </div>
     </section>
+
+    <!-- Delete Alert Modal -->
     <x-delete-alert />
 </x-app-layout>

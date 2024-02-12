@@ -19,7 +19,7 @@ class VoucherCodeFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::role('users')->inRandomOrder()->first()->id,
+            'user_id' => User::role('users')->inRandomOrder()->firstOrFail()->id,
             'voucher_code' => strtoupper(Str::random(6)),
         ];
     }

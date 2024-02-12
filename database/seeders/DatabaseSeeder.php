@@ -13,18 +13,18 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Call RolesAndPermissionsSeeder to seed roles and permissions
-        // $this->call(RolesAndPermissionsSeeder::class);
+        $this->call(RolesAndPermissionsSeeder::class);
 
         // Call AdminSeeder to seed admin users
-        // $this->call(AdminSeeder::class);
+        $this->call(AdminSeeder::class);
 
         // Call UserSeeder to seed admin users
-        // $this->call(UserSeeder::class);
+        $this->call(UserSeeder::class);
 
         // Call GroupSeeder to seed admin users
-        // $this->call(GroupSeeder::class);
+        $this->call(GroupSeeder::class);
 
         // Call VoucherCodeSeeder to seed admin users
-        // $this->call(VoucherCodeSeeder::class);
+        $this->call(VoucherCodeSeeder::class);
     }
 }

@@ -20,7 +20,10 @@
                         <h6>{{ Auth::user()->name }}</h6>
                         {{-- Display content if the user has the 'users' role --}}
                         @hasrole('users')
-                            <span>Group 1</span>
+                            <span>
+                                <b>Group: </b>
+                                {{ Auth::user()->groups->first()->name }}
+                            </span>
                         @endhasrole
                     </li>
                     <li>

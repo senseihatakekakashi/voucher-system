@@ -45,6 +45,7 @@
                                         @endhasrole
                         
                                         <a href="{{ route('users.index', 'key=' . Crypt::encryptString($group->id)) }}" class="mx-2">{{ __('View Users') }}</a>
+                                        <a href="{{ route('export.show', Crypt::encryptString($group->id)) }}" class="mx-2">{{ __('Export Users Voucher Codes') }}</a>
                                     </td>
                                 </tr>
                                 @endforeach

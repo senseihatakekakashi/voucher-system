@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GroupAdminController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
@@ -36,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Place routes or route definitions specific to 'super-admin' or 'group-admin' here
         Route::resource('/groups', GroupController::class);
         Route::resource('/users', UserController::class);
+        Route::resource('/export', ExportController::class);
     });
 
     // Route group accessible only to users with the 'users' role

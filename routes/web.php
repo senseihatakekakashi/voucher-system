@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GroupAdminController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherCodeController;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
+    Route::get('/home', [HomeController::class, 'redirectTo'])->name('home');
+    
     // Route group accessible only to users with the 'super-admin' role
     Route::group(['middleware' => ['role:super-admin']], function () {
         // Place routes or route definitions specific to 'super-admin' here
@@ -40,10 +42,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['middleware' => ['role:users']], function () {
         Route::resource('/voucher-codes', VoucherCodeController::class);
     });
-
-    Route::get('/dashboard', function () {
-        return view('pages.voucher-codes.index');
-    })->name('dashboard');
 });
 
 

@@ -31,14 +31,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['middleware' => ['role:super-admin']], function () {
         // Place routes or route definitions specific to 'super-admin' here
         Route::resource('/group-admins', GroupAdminController::class);
+        Route::resource('/groups', GroupController::class);
+        Route::get('/export', [ExportController::class, 'index'])->name('export.index');
     });
 
     // Route group accessible to users with either 'super-admin' or 'group-admin' roles
     Route::group(['middleware' => ['role:super-admin|group-admin']], function () {
         // Place routes or route definitions specific to 'super-admin' or 'group-admin' here
-        Route::resource('/groups', GroupController::class);
+        Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
         Route::resource('/users', UserController::class);
-        Route::resource('/export', ExportController::class);
+        Route::get('/export/{export}', [ExportController::class, 'show'])->name('export.show');
     });
 
     // Route group accessible only to users with the 'users' role

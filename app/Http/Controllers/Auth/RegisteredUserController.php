@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Exception;
 
 class RegisteredUserController extends Controller
 {
@@ -45,8 +46,15 @@ class RegisteredUserController extends Controller
             'email_verified_at' => Carbon::now()->toDateTimeString(),
         ]);
 
-        // On successful registration, the user will receive a welcome email
-        $user->notify(new WelcomeEmailNotification());
+        try {
+            // Attempt to send the email notification
+            $user->notify(new WelcomeEmailNotification());
+        } catch (Exception $e) {
+            // Log the error or handle it in a way that suits your application
+            \Log::error('Error sending email notification: ' . $e->getMessage());
+        
+            // Continue with the rest of your code or perform any necessary fallback actions
+        }
 
         // On successful registration, the user will receive a role of users
         $user->assignRole('users');

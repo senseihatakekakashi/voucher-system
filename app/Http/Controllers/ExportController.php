@@ -56,7 +56,16 @@ class ExportController extends Controller
      */
     public function show(string $id)
     {
-        $group = Group::find($this->decryptService->decrypt($id));
+         // Decrypt the received key using DecryptService
+         $group_id = $this->decryptService->decrypt($id);
+
+         // Enforce access control check using policy
+         if (! $this->authorize('view', app(Group::class)->find($group_id))) {
+             abort(403);
+         }
+ 
+         // Retrieve the group with associated users
+        $group = Group::with('users')->find($group_id);
         $csvFile = $this->exportCSVService->exportGroupUsers($group);
         return response()->download($csvFile)->deleteFileAfterSend(true);
     }

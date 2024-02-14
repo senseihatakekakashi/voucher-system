@@ -25,6 +25,15 @@ class VoucherCode extends Model
         'user_id',
         'voucher_code',
     ];
+    
+    /**
+     * Define the policy class responsible for access control.
+     *
+     * @var string
+     */
+    protected $policies = [
+        VoucherCode::class => VoucherCodePolicy::class,
+    ];
 
     /**
      * Define a many-to-one relationship with the User model.

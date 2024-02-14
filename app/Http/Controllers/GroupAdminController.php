@@ -21,9 +21,9 @@ use Redirect;
 class GroupAdminController extends Controller
 {
     /**
-     * @var CUDService $cudService
+     * @var CUDService $CUDService
      */
-    protected $cudService;
+    protected $CUDService;
 
     /**
      * @var DataProcessorService $dataProcessorService
@@ -40,7 +40,7 @@ class GroupAdminController extends Controller
      */
     public function __construct()
     {
-        $this->cudService = new CUDService;
+        $this->CUDService = new CUDService;
         $this->dataProcessorService = new DataProcessorService;
         $this->decryptService = new DecryptService;
     }
@@ -85,7 +85,7 @@ class GroupAdminController extends Controller
     public function update(Request $request, string $id)
     {
         $group_user = GroupUser::where('user_id', $this->decryptService->decrypt($id));
-        $this->cudService->delete($group_user);
+        $this->CUDService->delete($group_user);
 
         $data = $this->dataProcessorService->assignGroupAdminsToGroup($id, $request->groups);
         GroupUser::insert($data);

@@ -41,14 +41,20 @@
                                                 <a href="{{ route('groups.edit', Crypt::encryptString($group->id)) }}" class="mx-2">{{ __('Edit') }}</a>
                                                 
                                                 <!-- Form for Deleting Group -->
-                                                <form id="deleteForm{{$key}}" method="POST" action="{{ route('groups.destroy', Crypt::encryptString($group->id)) }}" class="d-inline">
-                                                    @csrf
-                                                    @method('delete')
-                                                    
-                                                    <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="{{$key}}">
+                                                @if ($group->users->count() === 0) {{-- Show delete form only if the group has no users --}}
+                                                    <form id="deleteForm{{$key}}" method="POST" action="{{ route('groups.destroy', Crypt::encryptString($group->id)) }}" class="d-inline">
+                                                        @csrf
+                                                        @method('delete')
+                                                        
+                                                        <button type="button" class="btn btn-link text-decoration-none delete-button" data-id="{{$key}}">
+                                                            {{ __('Delete') }}
+                                                        </button>
+                                                    </form>
+                                                @else {{-- Disable delete button if the group has users --}}
+                                                    <button type="button" class="btn btn-link text-decoration-none delete-button" type="button" disabled>
                                                         {{ __('Delete') }}
                                                     </button>
-                                                </form>
+                                                @endif
                                             @endhasrole
                                             
                                             <!-- View Users and Export Users Voucher Codes Options -->

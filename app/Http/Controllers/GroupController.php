@@ -89,7 +89,7 @@ class GroupController extends Controller
     public function update(UpdateGroupRequest $request, Group $group)
     {
         $this->CUDService->update($request, $group);
-        return Redirect::back();
+        return redirect()->route('groups.index');
     }
 
     /**

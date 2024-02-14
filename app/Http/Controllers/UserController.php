@@ -20,9 +20,9 @@ use Redirect;
 class UserController extends Controller
 {
     /**
-     * @var CUDService $cudService
+     * @var CUDService $CUDService
      */
-    protected $cudService;
+    protected $CUDService;
 
     /**
      * @var DecryptService $decryptService
@@ -34,7 +34,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->cudService = new CUDService;
+        $this->CUDService = new CUDService;
         $this->decryptService = new DecryptService;
     }
 
@@ -46,10 +46,24 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $id = $this->decryptService->decrypt($request->key);
-        $group = Group::with('users')->find($id);
-        $unallocated_users = User::whereDoesntHave('groups')->role('users')->orderBy('name')->get();
+        // Decrypt the received key using DecryptService
+        $group_id = $this->decryptService->decrypt($request->key);
 
+        // Enforce access control check using policy
+        if (! $this->authorize('view', app(Group::class)->find($group_id))) {
+            abort(403);
+        }
+
+        // Retrieve the group with associated users
+        $group = Group::with('users')->find($group_id);
+
+        // Fetch unallocated users with the "users" role
+        $unallocated_users = User::whereDoesntHave('groups')
+            ->role('users')
+            ->orderBy('name')
+            ->get();
+
+        // Render the view with necessary data
         return view('pages.users.index')
             ->with('group', $group)
             ->with('unallocated_users', $unallocated_users);
@@ -81,7 +95,14 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $group_user = GroupUser::where('user_id', $this->decryptService->decrypt($id));
-        $this->cudService->delete($group_user);
+        $group_id = $group_user->first()->group_id;
+
+        // Enforce access control check using policy
+        if (! $this->authorize('view', app(Group::class)->find($group_id))) {
+            abort(403);
+        }
+
+        $this->CUDService->delete($group_user);
         return Redirect::back();
     }
 }

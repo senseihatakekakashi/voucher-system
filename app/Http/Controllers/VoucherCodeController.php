@@ -20,9 +20,9 @@ use Redirect;
 class VoucherCodeController extends Controller
 {
     /**
-     * @var CUDService $cudService
+     * @var CUDService $CUDService
      */
-    protected $cudService;
+    protected $CUDService;
 
     /**
      * @var DataProcessorService $dataProcessorService
@@ -39,7 +39,7 @@ class VoucherCodeController extends Controller
      */
     public function __construct()
     {
-        $this->cudService = new CUDService;
+        $this->CUDService = new CUDService;
         $this->dataProcessorService = new DataProcessorService;
         $this->decryptService = new DecryptService;
     }
@@ -87,7 +87,8 @@ class VoucherCodeController extends Controller
     public function destroy($id)
     {
         $voucher_code = VoucherCode::find($this->decryptService->decrypt($id));
-        $this->cudService->delete($voucher_code);
+        $this->authorize('delete', $voucher_code);
+        $this->CUDService->delete($voucher_code);
         return Redirect::back();
     }
 }

@@ -26,6 +26,15 @@ class Group extends Model
     ];
 
     /**
+     * Define the policy class responsible for access control.
+     *
+     * @var string
+     */
+    protected $policies = [
+        Group::class => GroupPolicy::class,
+    ];
+
+    /**
      * Define a many-to-many relationship with the User model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

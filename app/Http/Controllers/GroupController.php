@@ -20,9 +20,9 @@ use Redirect;
 class GroupController extends Controller
 {
     /**
-     * @var CUDService $cudService
+     * @var CUDService $CUDService
      */
-    protected $cudService;
+    protected $CUDService;
 
     /**
      * @var DataProcessorService $dataProcessorService
@@ -39,7 +39,7 @@ class GroupController extends Controller
      */
     public function __construct()
     {
-        $this->cudService = new CUDService;
+        $this->CUDService = new CUDService;
         $this->dataProcessorService = new DataProcessorService;
         $this->decryptService = new DecryptService;
     }
@@ -63,7 +63,7 @@ class GroupController extends Controller
      */
     public function store(StoreGroupRequest $request)
     {
-        $this->cudService->create($request, (new Group));
+        $this->CUDService->create($request, (new Group));
         return Redirect::back();
     }
 
@@ -88,7 +88,7 @@ class GroupController extends Controller
      */
     public function update(UpdateGroupRequest $request, Group $group)
     {
-        $this->cudService->update($request, $group);
+        $this->CUDService->update($request, $group);
         return Redirect::back();
     }
 
@@ -101,7 +101,7 @@ class GroupController extends Controller
     public function destroy($id)
     {
         $group = Group::find($this->decryptService->decrypt($id));
-        $this->cudService->delete($group);
+        $this->CUDService->delete($group);
         return Redirect::back();
     }
 }

@@ -110,11 +110,8 @@ class DataProcessorService
      *
      * @return \Illuminate\Support\Collection
      */
-    public function paginateVouchers($page)
+    public function paginateVouchers($voucher_per_page)
     {
-        $perPage = 5;
-        $voucher_codes = VoucherCode::where('user_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
-
-        return $voucher_codes->forPage($page, $perPage);
+        return VoucherCode::where('user_id', auth()->user()->id)->orderBy('id', 'DESC')->paginate($voucher_per_page);
     }
 }

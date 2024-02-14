@@ -33,10 +33,7 @@
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <nav>
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="{{ route('voucher-codes.index', 'page=' . 1) }}">Page 1</a></li>
-                        <li class="page-item"><a class="page-link" href="{{ route('voucher-codes.index', 'page=' . 2) }}">Page 2</a></li>
-                    </ul>
+                    {{$voucher_codes->onEachSide(1)->links()}}
                 </nav>
             </div>
         </div>

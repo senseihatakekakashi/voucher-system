@@ -8,6 +8,7 @@ use App\Services\CUDService;
 use App\Services\DataProcessorService;
 use App\Services\DecryptService;
 use Illuminate\Http\Request;
+use Config;
 use Redirect;
 
 /**
@@ -52,9 +53,8 @@ class VoucherCodeController extends Controller
      */
     public function index(Request $request)
     {
-        $page = request()->get('page', $request->page); // Get the current page from the request, default to 1
-        $paginatedRecords = $this->dataProcessorService->paginateVouchers($page);
-        return view('pages.voucher-codes.index')->with('voucher_codes', $paginatedRecords);
+        $voucher_codes = $this->dataProcessorService->paginateVouchers(config('vouchercode.per_page'));
+        return view('pages.voucher-codes.index')->with('voucher_codes', $voucher_codes);
     }
 
     /**

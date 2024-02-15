@@ -65,15 +65,11 @@ class VoucherCodeController extends Controller
      */
     public function store(StoreVoucherCodeRequest $request)
     {
-        if ($this->dataProcessorService->maxVoucherNumberReached(auth()->user()->id))
+        if ($this->dataProcessorService->maxVoucherNumberReached(auth()->user()->id, $request->quantity))
             $request->session()->flash('status', 'Error!');
         else {
-            $voucher_code = $this->dataProcessorService->generateUniqueVoucherCode();
-            $data = [
-                'user_id' => auth()->user()->id,
-                'voucher_code' => $voucher_code,
-            ];
-            VoucherCode::create($data);
+            $data = $this->dataProcessorService->processVoucherCode($request->quantity);
+            VoucherCode::insert($data);
         }
         return Redirect::back();
     }

@@ -92,15 +92,44 @@ class DataProcessorService
     }
 
     /**
-     * Check if the user has reached the maximum number of voucher codes.
+     * Generate voucher codes for the specified quantity.
+     *
+     * @param int $voucher_quantity The quantity of voucher codes to generate.
+     *
+     * @return array An array of voucher code data with user_id and unique voucher_code.
+     */
+    public function processVoucherCode($voucher_quantity)
+    {
+        // Initialize an empty array to store voucher code data
+        $data = [];
+
+        // Loop through the specified quantity to generate unique voucher codes
+        for($i=0; $i < $voucher_quantity; $i++) {
+            $data[$i] = [
+                'user_id' => auth()->user()->id,
+                'voucher_code' => $this->generateUniqueVoucherCode(),
+            ];
+        }
+
+        // Return the generated voucher code data
+        return $data;
+    }
+    
+    /**
+     * Check if the user has reached the maximum number of voucher codes allowed.
      *
      * @param int $user_id The ID of the user.
+     * @param int $quantity The quantity of voucher codes to be added.
      *
-     * @return bool
+     * @return bool Returns true if the user has reached the maximum limit, false otherwise.
      */
-    public function maxVoucherNumberReached($user_id): bool
+    public function maxVoucherNumberReached($user_id, $quantity): bool
     {
-        return VoucherCode::where('user_id', $user_id)->count() > 9;
+        // Calculate the total count of existing voucher codes for the user
+        $currentVoucherCount = VoucherCode::where('user_id', $user_id)->count();
+
+        // Check if adding the specified quantity exceeds the configured limit
+        return ($currentVoucherCount + $quantity) > config('vouchercode.limit');
     }
 
     /**

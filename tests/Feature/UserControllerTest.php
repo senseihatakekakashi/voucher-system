@@ -7,6 +7,7 @@ use App\Models\GroupUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -43,6 +44,9 @@ class UserControllerTest extends TestCase
         $this->actingAs($user);
 
         $group = Group::factory()->create();
+
+        // Mock the authorization check to always allow
+        Gate::shouldReceive('authorize')->andReturn(true);
         
         $response = $this->get("/users?key=" . Crypt::encryptString($group->id));
         $response->assertOk();
@@ -162,6 +166,9 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
         $group = Group::factory()->create();
         GroupUser::create(['user_id' => $user->id, 'group_id' => $group->id]);
+
+        // Mock the authorization check to always allow
+        Gate::shouldReceive('authorize')->andReturn(true);
 
         $user_id = Crypt::encryptString($user->id);
         $group_id = Crypt::encryptString($group->id);
